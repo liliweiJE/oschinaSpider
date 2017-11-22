@@ -65,3 +65,43 @@ class ImportnewSpiderPipeline(object):
         except Exception as e:
             print(e)
         return item
+
+class BestHotel58Pipeline(object):
+    def __init__(self):
+        self.connect=pymysql.connect(
+            host=settings.MYSQL_HOST,
+            db=settings.MYSQL_DBNAME,
+            user=settings.MYSQL_USER,
+            passwd=settings.MYSQL_PASSWD,
+            charset='utf8',
+            use_unicode=True
+        )
+        self.cursor=self.connect.cursor()
+
+    def process_item(self, item, spider):
+        try:
+            self.cursor.execute(
+                """insert into 58_hotel(hotel_title,hotel_price,hotel_lable,hotel_phonenume,hotel_time,hotel_lat,hotel_lon,hotel_detail) value (%s,%s,%s,%s,%s,%s,%s,%s) 
+                    ON DUPLICATE KEY UPDATE 
+                    hotel_price = %s, hotel_lable = %s, hotel_phonenume = %s, hotel_time = %s, hotel_lat = %s ,hotel_lon = %s, hotel_detail = %s
+                """,
+                (item['hotel_title'],
+                item['hotel_price'],
+                 item['hotel_lable'],
+                 item['hotel_phonenume'],
+                 item['hotel_time'],
+                 item['hotel_lat'],
+                 item['hotel_lon'],
+                 item['hotel_detail'],
+                 item['hotel_price'],
+                 item['hotel_lable'],
+                 item['hotel_phonenume'],
+                 item['hotel_time'],
+                 item['hotel_lat'],
+                 item['hotel_lon'],
+                 item['hotel_detail']
+                 ))
+            self.connect.commit()
+        except Exception as e:
+            print(e)
+        return item

@@ -6,7 +6,7 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
+from util.proxyPoolUtil import ProxyPoolUtil
 
 import random
 
@@ -27,6 +27,18 @@ class RandomUserAgentMiddleware(object):
         return cls(settings.getlist('USER_AGENTS'))
 
     def process_request(self, request, spider):
+        #设置代理IP
+        romProxy=ProxyPoolUtil.get_proxy()
+        request.meta['proxy'] = "http://{}".format(romProxy.decode())
         # 设置随机的User-Agent
         request.headers.setdefault('User-Agent', random.choice(self.agents))
+
+    def process_response(self, request, response, spider):
+        '''对返回的response处理'''
+        # 如果返回的response状态不是200，重新生成当前request对象
+        if response.status != 200:
+            romProxy = ProxyPoolUtil.get_proxy()
+            request.meta['proxy'] = "http://{}".format(romProxy.decode())
+            return request
+        return response
 

@@ -29,13 +29,15 @@ MYSQL_USER = 'root'
 MYSQL_PASSWD = ''
 
 ITEM_PIPELINES = {
-    'oschinaSpider.pipelines.ImportnewSpiderPipeline': 301,
-    'oschinaSpider.items.ImportNewSpiderItem': 301,
+    'oschinaSpider.pipelines.BestHotel58Pipeline': 301,
+    'oschinaSpider.items.BestHotel58Item': 301,
 }
 
 # 配置下载中间件
 DOWNLOADER_MIDDLEWARES = {
-    'oschinaSpider.middlewares.RandomUserAgentMiddleware': 543,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware':300,
+    #'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware':543,
+    'oschinaSpider.middlewares.RandomUserAgentMiddleware': 125,
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
 }
 
@@ -58,6 +60,9 @@ USER_AGENTS = [
     "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto/2.9.168 Version/11.52",
 ]
 
+DOWNLOAD_TIMEOUT  =  15
+RETRY_ENABLED = True
+RETRY_TIMES = 5
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 

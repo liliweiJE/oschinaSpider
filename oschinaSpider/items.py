@@ -46,5 +46,16 @@ class ImportNewSpiderItem(scrapy.Item):
     importnew_remark=scrapy.Field()
     importnew_imgurl=scrapy.Field()
 
+class BestHotel58Item(scrapy.Item):
+    hotel_title=scrapy.Field()
+    hotel_price=scrapy.Field()
+    hotel_lable=scrapy.Field()
+    hotel_phonenume=scrapy.Field()
+    hotel_time=scrapy.Field()
+    hotel_lat=scrapy.Field()
+    hotel_lon=scrapy.Field()
+    hotel_detail=scrapy.Field()
+
+
 
 
